@@ -2,7 +2,6 @@ from flask import Flask, request, render_template_string
 
 app = Flask(__name__)
 
-# PIN secreto para validar os vales
 PIN_CORRETO = "2016"
 
 HTML = """
@@ -19,18 +18,18 @@ HTML = """
     padding: 40px;
 ">
 
-    <h1>馃挅 Vale para a Nane</h1>
+    <h1>💖 Vale para a Nane</h1>
 
     {% if not ativado %}
         <p>
-            Esse vale 茅 especial.<br>
-            Ele 茅 ativado junto com quem te ama 馃挄
+            Esse vale é especial.<br>
+            Ele é ativado junto com quem te ama 💕
         </p>
 
         {% if erro %}
             <p style="color:#c2185b;">
-                馃拰 Quase l谩鈥�<br>
-                Esse vale precisa da nossa confirma莽茫o juntos 馃挄
+                💌 Quase lá…<br>
+                Esse vale precisa da nossa confirmação juntos 💕
             </p>
         {% endif %}
 
@@ -39,23 +38,18 @@ HTML = """
                 type="password"
                 name="pin"
                 placeholder="Digite o PIN"
-                style="
-                    padding: 10px;
-                    font-size: 16px;
-                    border-radius: 6px;
-                    border: 1px solid #ccc;
-                "
+                style="padding:10px; font-size:16px;"
             >
             <br><br>
             <button
                 type="submit"
                 style="
-                    padding: 10px 20px;
-                    font-size: 16px;
-                    background-color: #e91e63;
-                    color: white;
-                    border: none;
-                    border-radius: 8px;
+                    padding:10px 20px;
+                    font-size:16px;
+                    background:#e91e63;
+                    color:white;
+                    border:none;
+                    border-radius:8px;
                 "
             >
                 Ativar vale
@@ -63,11 +57,8 @@ HTML = """
         </form>
 
     {% else %}
-        <h2>馃挅 Vale ativado, Nane 鉂わ笍</h2>
-        <p>
-            Hoje o meu tempo 茅 todo seu.<br>
-            Esse momento 茅 s贸 nosso 馃挒
-        </p>
+        <h2>💖 Vale ativado, Nane ❤️</h2>
+        <p>Hoje o meu tempo é todo seu.</p>
     {% endif %}
 
 </body>
@@ -80,18 +71,14 @@ def index():
     erro = False
 
     if request.method == "POST":
-        pin_digitado = request.form.get("pin")
-
-        if pin_digitado == PIN_CORRETO:
+        if request.form.get("pin") == PIN_CORRETO:
             ativado = True
         else:
             erro = True
 
-    return render_template_string(
-        HTML,
-        ativado=ativado,
-        erro=erro
-    )
+    return render_template_string(HTML, ativado=ativado, erro=erro)
 
 if __name__ == "__main__":
-    app.run()
+    import os
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
